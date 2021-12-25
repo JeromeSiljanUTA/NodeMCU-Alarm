@@ -14,15 +14,15 @@ ESP8266WebServer server(80);
 #define MY_NTP_SERVER "at.pool.ntp"
 #define MY_TZ "CST6CDT"
 
-#define LATCH_PIN 8
+#define LATCH_PIN 5
 
 void setup() {
     // PinModes
     pinMode(16, OUTPUT);
-    pinMode( 5,  OUTPUT);
-    pinMode( 4,  OUTPUT);
-    pinMode( 0,  OUTPUT);
-    pinMode( 2,  OUTPUT);
+    pinMode(5,  OUTPUT);
+    pinMode(4,  OUTPUT);
+    pinMode(0,  OUTPUT);
+    pinMode(2,  OUTPUT);
     pinMode(14,  OUTPUT);
     pinMode(12,  OUTPUT);
     pinMode(13,  OUTPUT);
@@ -37,78 +37,78 @@ void setup() {
 
     configTime(MY_TZ, MY_NTP_SERVER);
     */
-
 }
 
 void loop() {
     //server.handleClient();
-    for(int i = 0; i < 10; i++){
-        writeNum(i);
-        delay(500);
-    }
+    writeNum(0);
+    delay(500);
+    writeNum(1);
+    delay(500);
+    writeNum(2);
+    delay(500);
 } 
 
 void writeNum(int num){
-
     switch(num){
         case 0:
-            shiftWrite(1,  LOW);
-            shiftWrite(2,  LOW);
-            shiftWrite(3,  LOW);
-            shiftWrite(4,  LOW);
+            shiftWrite(1, LOW);
+            shiftWrite(2, LOW);
+            shiftWrite(3, LOW);
+            shiftWrite(4, LOW);
             break;
         case 1:
             shiftWrite(1, HIGH);
-            shiftWrite(2,  LOW);
-            shiftWrite(3,  LOW);
-            shiftWrite(4,  LOW);
+            shiftWrite(2, LOW);
+            shiftWrite(3, LOW);
+            shiftWrite(4, LOW);
             break;
         case 2:
-            shiftWrite(1,  LOW);
+            shiftWrite(1, LOW);
             shiftWrite(2, HIGH);
-            shiftWrite(3,  LOW);
-            shiftWrite(4,  LOW);
+            shiftWrite(3, LOW);
+            shiftWrite(4, LOW);
             break;
         case 3:
             shiftWrite(1, HIGH);
             shiftWrite(2, HIGH);
-            shiftWrite(3,  LOW);
-            shiftWrite(4,  LOW);
+            shiftWrite(3, LOW);
+            shiftWrite(4, LOW);
             break;
         case 4:
-            shiftWrite(1,  LOW);
-            shiftWrite(2,  LOW);
+            shiftWrite(1, LOW);
+            shiftWrite(2, LOW);
             shiftWrite(3, HIGH);
-            shiftWrite(4,  LOW);
+            shiftWrite(4, LOW);
             break;
         case 5:
             shiftWrite(1, HIGH);
-            shiftWrite(2,  LOW);
+            shiftWrite(2, LOW);
             shiftWrite(3, HIGH);
-            shiftWrite(4,  LOW);
+            shiftWrite(4, LOW);
             break;
         case 6:
-            shiftWrite(1,  LOW);
+            shiftWrite(1, LOW);
             shiftWrite(2, HIGH);
             shiftWrite(3, HIGH);
-            shiftWrite(4,  LOW);
+            shiftWrite(4, LOW);
             break;
         case 7:
             shiftWrite(1, HIGH);
             shiftWrite(2, HIGH);
             shiftWrite(3, HIGH);
-            shiftWrite(4,  LOW);
+            shiftWrite(4, LOW);
             break;
         case 8:
-            shiftWrite(1,  LOW);
-            shiftWrite(2,  LOW);
-            shiftWrite(3,  LOW);
+            shiftWrite(1, LOW);
+            shiftWrite(2, LOW);
+            shiftWrite(3, LOW);
             shiftWrite(4, HIGH);
             break;
         case 9:
             shiftWrite(1, HIGH);
-            shiftWrite(2,  LOW);
-            shiftWrite(3,  LOW);
+            shiftWrite(2, LOW);
+            shiftWrite(3, LOW);
             shiftWrite(4, HIGH);
             break;
     }
