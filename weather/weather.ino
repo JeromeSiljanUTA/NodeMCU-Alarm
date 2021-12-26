@@ -4,7 +4,6 @@
 #include <ESP8266WebServer.h>
 #include <string.h>
 #include <time.h>
-
 #include "Display.h"
 
 // WiFi Setup
@@ -16,11 +15,11 @@ ESP8266WebServer server(80);
 #define MY_NTP_SERVER "at.pool.ntp"
 #define MY_TZ "CST6CDT"
 
-#define LATCH_PIN 0
+#define LATCH_PIN 16
 
 void setup() {
     // PinModes
-    pinMode(16, OUTPUT);
+    pinMode(LATCH_PIN, OUTPUT);
 
     pinMode(5, OUTPUT);
     pinMode(4, OUTPUT);
@@ -34,6 +33,7 @@ void setup() {
 
     Serial.begin(115200);
 
+
     /*
     setWifi();
     setOn();
@@ -42,94 +42,29 @@ void setup() {
     configTime(MY_TZ, MY_NTP_SERVER);
     */
 
-
 }
 
-Display disp1(5, 4, 0, 2);
+Display disp[] = {Display(5, 4, 0, 2), Display(14, 12, 13, 15)};
 
 void loop() {
     //server.handleClient();
-    disp1.writeNum(3);
+    for(int i = 0; i < 100; i++){
+        printNum(i, disp);
+        updateDisplay();
+        delay(50);
+    }
 } 
 
-/*
-void writeNum(int num, int display){
-    if(display == 1){
-        display = 5;
-    }
-    else{
-        display = 1;
-    }
-
-    switch(num){
-        case 0:
-            shiftWrite(0 + display, LOW);
-            shiftWrite(1 + display, LOW);
-            shiftWrite(2 + display, LOW);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 1:
-            shiftWrite(0 + display, HIGH);
-            shiftWrite(1 + display, LOW);
-            shiftWrite(2 + display, LOW);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 2:
-            shiftWrite(0 + display, LOW);
-            shiftWrite(1 + display, HIGH);
-            shiftWrite(2 + display, LOW);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 3:
-            shiftWrite(0 + display, HIGH);
-            shiftWrite(1 + display, HIGH);
-            shiftWrite(2 + display, LOW);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 4:
-            shiftWrite(0 + display, LOW);
-            shiftWrite(1 + display, LOW);
-            shiftWrite(2 + display, HIGH);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 5:
-            shiftWrite(0 + display, HIGH);
-            shiftWrite(1 + display, LOW);
-            shiftWrite(2 + display, HIGH);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 6:
-            shiftWrite(0 + display, LOW);
-            shiftWrite(1 + display, HIGH);
-            shiftWrite(2 + display, HIGH);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 7:
-            shiftWrite(0 + display, HIGH);
-            shiftWrite(1 + display, HIGH);
-            shiftWrite(2 + display, HIGH);
-            shiftWrite(3 + display, LOW);
-            break;
-        case 8:
-            shiftWrite(0 + display, LOW);
-            shiftWrite(1 + display, LOW);
-            shiftWrite(2 + display, LOW);
-            shiftWrite(3 + display, HIGH);
-            break;
-        case 9:
-            shiftWrite(0 + display, HIGH);
-            shiftWrite(1 + display, LOW);
-            shiftWrite(2 + display, LOW);
-            shiftWrite(3 + display, HIGH);
-            break;
-    }
-    updateDisplay();
+void printNum(int num, Display disp[2]){
+    int tens = num/10;
+    int ones = num%10;
+    disp[0].writeNum(tens);
+    disp[1].writeNum(ones);
 }
-*/ 
 
 void updateDisplay(){
-    shiftWrite(LATCH_PIN, HIGH);
-    shiftWrite(LATCH_PIN, LOW);
+    digitalWrite(LATCH_PIN, HIGH);
+    digitalWrite(LATCH_PIN, LOW);
 }
 
 // WebServer Stuff
