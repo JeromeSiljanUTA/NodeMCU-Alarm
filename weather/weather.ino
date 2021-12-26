@@ -5,6 +5,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "Display.h"
 
 // WiFi Setup
 const char *ssid = "Frontier1312";
@@ -40,15 +41,15 @@ void setup() {
 
     configTime(MY_TZ, MY_NTP_SERVER);
     */
+
+
 }
+
+Display disp1(3);
 
 void loop() {
     //server.handleClient();
-    for(int i = 0; i < 10; i++){
-        writeNum(i, 0);
-        writeNum(i, 1);
-        delay(500);
-    }
+    writeNum(disp1.getVal(), 1);
 } 
 
 void writeNum(int num, int display){
