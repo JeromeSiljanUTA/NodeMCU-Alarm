@@ -45,13 +45,14 @@ void setup() {
 
 }
 
-Display disp1(3);
+Display disp1(5, 4, 0, 2);
 
 void loop() {
     //server.handleClient();
-    writeNum(disp1.getVal(), 1);
+    disp1.writeNum(3);
 } 
 
+/*
 void writeNum(int num, int display){
     if(display == 1){
         display = 5;
@@ -124,38 +125,7 @@ void writeNum(int num, int display){
     }
     updateDisplay();
 }
-
-void shiftWrite(int num, int state){
-    switch(num){
-        case 0:
-            digitalWrite(16, state);
-        break;
-        case 1:
-            digitalWrite(5, state);
-        break;
-        case 2:
-            digitalWrite(4, state);
-        break;
-        case 3:
-            digitalWrite(0, state);
-        break;
-        case 4:
-            digitalWrite(2, state);
-        break;
-        case 5:
-            digitalWrite(14, state);
-        break;
-        case 6:
-            digitalWrite(12, state);
-        break;
-        case 7:
-            digitalWrite(13, state);
-        break;
-        case 8:
-            digitalWrite(15, state);
-        break;
-    }
-}
+*/ 
 
 void updateDisplay(){
     shiftWrite(LATCH_PIN, HIGH);
