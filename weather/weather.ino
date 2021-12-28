@@ -1,7 +1,7 @@
 // Libraries
+#include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
 #include <string.h>
 #include <time.h>
 #include "Display.h"
@@ -10,10 +10,11 @@
 const char *ssid = "Frontier1312";
 const char *password = "2891547465";
 
-ESP8266WebServer server(80);
-
 #define MY_NTP_SERVER "at.pool.ntp"
 #define MY_TZ "CST6CDT"
+
+tm timeinfo;
+time_t now;
 
 #define LATCH_PIN 16
 
@@ -33,26 +34,26 @@ void setup() {
 
     Serial.begin(115200);
 
-
-    /*
     setWifi();
     setOn();
-    server.begin();
 
     configTime(MY_TZ, MY_NTP_SERVER);
-    */
 
 }
 
+// initializing displays
 Display disp[] = {Display(5, 4, 0, 2), Display(14, 12, 13, 15)};
 
 void loop() {
     //server.handleClient();
+    /*
     for(int i = 0; i < 100; i++){
         printNum(i, disp);
         updateDisplay();
         delay(50);
     }
+    */
+    getSecond();
 } 
 
 void printNum(int num, Display disp[2]){
@@ -67,7 +68,6 @@ void updateDisplay(){
     digitalWrite(LATCH_PIN, LOW);
 }
 
-// WebServer Stuff
 void setWifi(){
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
@@ -77,16 +77,10 @@ void setWifi(){
     Serial.println(WiFi.localIP());
 }
 
-void setOn(){
-    server.on ("/", handleRoot);
-}
-
-void handleRoot() {
-    String mainpage = "";
-    mainpage += "<!DOCTYPE html>";
-    mainpage += "<html>";
-    mainpage += "<head>";
-    mainpage += "<h1 id=\"header\">Weather Display</h1>";
-
-    server.send(200, "text/html", mainpage);
+void getSecond(){
+    time(&now);
+    localtime_r(&now, &timeinfo);
+    Serial.println(timeinfo.tm_sec);
+    printNum(timeinfo.tm_sec, disp);
+    updateDisplay();
 }
