@@ -1,7 +1,5 @@
 // Libraries
-#include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
 #include <string.h>
 #include <time.h>
 #include "Display.h"
@@ -10,6 +8,7 @@
 const char *ssid = "Frontier1312";
 const char *password = "2891547465";
 
+// NTP Setup
 #define MY_NTP_SERVER "at.pool.ntp"
 #define MY_TZ "CST6CDT"
 
@@ -17,6 +16,11 @@ tm timeinfo;
 time_t now;
 
 #define LATCH_PIN 16
+
+// initializing displays
+Display disp[] = {Display(5, 4, 0, 2), Display(14, 12, 13, 15)};
+
+WiFiClient client;
 
 void setup() {
     // PinModes
@@ -33,26 +37,12 @@ void setup() {
     pinMode(15, OUTPUT);
 
     Serial.begin(115200);
-
     setWifi();
-    setOn();
-
     configTime(MY_TZ, MY_NTP_SERVER);
-
 }
 
-// initializing displays
-Display disp[] = {Display(5, 4, 0, 2), Display(14, 12, 13, 15)};
 
 void loop() {
-    //server.handleClient();
-    /*
-    for(int i = 0; i < 100; i++){
-        printNum(i, disp);
-        updateDisplay();
-        delay(50);
-    }
-    */
     getSecond();
 } 
 
@@ -61,11 +51,6 @@ void printNum(int num, Display disp[2]){
     int ones = num%10;
     disp[0].writeNum(tens);
     disp[1].writeNum(ones);
-}
-
-void updateDisplay(){
-    digitalWrite(LATCH_PIN, HIGH);
-    digitalWrite(LATCH_PIN, LOW);
 }
 
 void setWifi(){
@@ -80,7 +65,11 @@ void setWifi(){
 void getSecond(){
     time(&now);
     localtime_r(&now, &timeinfo);
-    Serial.println(timeinfo.tm_sec);
     printNum(timeinfo.tm_sec, disp);
     updateDisplay();
+}
+
+void updateDisplay(){
+    digitalWrite(LATCH_PIN, HIGH);
+    digitalWrite(LATCH_PIN, LOW);
 }
