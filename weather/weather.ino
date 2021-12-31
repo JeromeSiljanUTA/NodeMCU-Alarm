@@ -1,4 +1,5 @@
 // Libraries
+#include <OpenWeatherOneCall.h>
 #include <ESP8266WiFi.h>
 #include <string.h>
 #include <time.h>
@@ -15,12 +16,12 @@ const char *password = "2891547465";
 tm timeinfo;
 time_t now;
 
-#define LATCH_PIN 16
-
 // initializing displays
 Display disp[] = {Display(5, 4, 0, 2), Display(14, 12, 13, 15)};
 
 WiFiClient client;
+
+#define LATCH_PIN 16
 
 void setup() {
     // PinModes
